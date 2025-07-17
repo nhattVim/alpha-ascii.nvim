@@ -4,8 +4,6 @@ on:
   push:
     paths:
       - "lua/alpha_ascii/**"
-      - ".github/readme/README.header.md"
-      - ".github/readme/README.footer.md"
       - ".github/workflows/readme.yml"
   workflow_dispatch:
     inputs:
