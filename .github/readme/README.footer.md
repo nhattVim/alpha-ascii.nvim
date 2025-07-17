@@ -22,7 +22,7 @@ return {
             dashboard.button("SPC f b", "  Bookmarks  ", ":Telescope marks theme=ivy<CR>"),
             dashboard.button("SPC f t", "  Themes  ", ":Telescope colorscheme enable_preview=false<CR>"),
             dashboard.button("SPC f s", "  Settings", ":e $MYVIMRC | :cd %:p:h <CR>"),
-            dashboard.button("SPC c i", "  Change header image", ":ChDbHeader<CR>"),
+            dashboard.button("SPC c i", "  Change header image", ":AlphaAsciiNext<CR>"),
         }
 
         vim.api.nvim_create_autocmd("User", {
@@ -41,5 +41,14 @@ return {
 
         alpha.setup(dashboard.opts)
     end,
+}
+```
+
+## ⚙️Configuration
+
+```lua
+opts = {
+    header = "random", -- Set to "random" for a random header, or a specific header name (without .lua extension)
+    exclude = { "example1", "ugly_header" }, -- List of headers to exclude (filenames without .lua)
 }
 ```
