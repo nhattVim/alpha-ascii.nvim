@@ -1,4 +1,4 @@
-<p align='right'><em>Last updated: 2025-07-17 16:28 UTC+7</em></p>
+<p align='right'><em>Last updated: 2025-07-17 20:43 UTC+7</em></p>
 
 # alpha-ascii.nvim
 
@@ -8,15 +8,6 @@ A simple plugin for [alpha-nvim ]("https://github.com/goolord/alpha-nvim") that 
 
 <div align="center">
     <table>
-        <tr>
-            <td><img src="screenshots/abstract_portrait.png"/></td>
-            <td><img src="screenshots/blue_bubblegum.png"/></td>
-            <td><img src="screenshots/calm_eyes.png"/></td>
-        </tr>
-        <tr>
-            <td><img src="screenshots/color_eyes.png"/></td>
-            <td><img src="screenshots/girl_bandaged_eyes.png"/></td>
-            <td><img src="screenshots/red_jpa.png"/></td>
         </tr>
     </table>
 </div>
