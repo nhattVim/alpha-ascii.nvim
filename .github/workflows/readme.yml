@@ -4,6 +4,8 @@ on:
   push:
     paths:
       - "lua/alpha_ascii/**"
+      - ".github/readme/README.header.md"
+      - ".github/readme/README.footer.md"
       - ".github/workflows/readme.yml"
   workflow_dispatch:
     inputs:
@@ -43,11 +45,11 @@ jobs:
           echo '' >> "$PREVIEW_FILE_TMP"
           echo '<div align="center">' >> "$PREVIEW_FILE_TMP"
 
-          ascii_files=$(ls lua/alpha_ascii/*.lua | xargs -n1 basename | sed 's/\.lua$//' | sort)
+          preview_files=$(ls screenshots/*.png | xargs -n1 basename | sed 's/\.png$//' | sort)
 
           i=0
           echo '    <table>' >> "$PREVIEW_FILE_TMP"
-          for file in $ascii_files; do
+          for file in $preview_files; do
             if [ $((i % 3)) -eq 0 ]; then
               if [ $i -ne 0 ]; then
                 echo '        </tr>' >> "$PREVIEW_FILE_TMP"
