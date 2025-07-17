@@ -1,21 +1,8 @@
 local M = {}
 
-M.options = {
-    header = nil,
-}
-
-function M.setup(opts)
-    M.options = vim.tbl_deep_extend("force", M.options, opts or {})
-    M.apply_header()
-
-    vim.api.nvim_create_user_command("ChDbHeader", function()
-        require("alpha-ascii").change_header()
-    end, {})
-end
-
 local function get_ascii_files()
     local folder = debug.getinfo(1, "S").source:sub(2):match("(.*/)") or ""
-    local glob_pattern = folder .. "*.lua"
+    local glob_pattern = folder .. "alpha_ascii/" .. "*.lua"
     local files = vim.fn.glob(glob_pattern, true, true)
     local result = {}
 
@@ -29,7 +16,7 @@ local function get_ascii_files()
 end
 
 local function load_ascii(name)
-    local module_name = "alpha-ascii." .. name
+    local module_name = "alpha_ascii." .. name
     package.loaded[module_name] = nil
     local ok, mod = pcall(require, module_name)
     if ok and mod.header then
@@ -37,6 +24,19 @@ local function load_ascii(name)
     else
         return nil
     end
+end
+
+M.options = {
+    header = nil,
+}
+
+function M.setup(opts)
+    M.options = vim.tbl_deep_extend("force", M.options, opts or {})
+    M.apply_header()
+
+    vim.api.nvim_create_user_command("ChDbHeader", function()
+        require("alpha_ascii").change_header()
+    end, {})
 end
 
 function M.get_random_header()
@@ -65,7 +65,7 @@ function M.apply_header()
     if header then
         dashboard.config.layout[2] = header
     else
-        print("[alpha-ascii] No ascii headers found.")
+        print("[alpha_ascii] No ascii headers found.")
     end
 end
 
@@ -76,7 +76,7 @@ function M.change_header()
         dashboard.config.layout[2] = new_header
         vim.cmd("AlphaRedraw")
     else
-        print("[alpha-ascii] No ascii headers found.")
+        print("[alpha_ascii] No ascii headers found.")
     end
 end
 
