@@ -41,7 +41,14 @@ jobs:
       - name: Generate GIF from screenshots
         run: |
           if ls screenshots/*.png 1> /dev/null 2>&1; then
-            convert -delay 100 -loop 0 screenshots/*.png "$GIF_FILE"
+            convert \
+              -delay 100 \
+              -loop 0 \
+              -dispose previous \
+              -layers OptimizeTransparency \
+              -quality 100 \
+              -resize 100% \
+              screenshots/*.png "$GIF_FILE"
           else
             echo "No PNG screenshots found."
           fi
