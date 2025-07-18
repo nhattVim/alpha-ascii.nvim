@@ -54,7 +54,7 @@ jobs:
           echo '## ✨ Preview' > "$PREVIEW_FILE_TMP"
           echo '' >> "$PREVIEW_FILE_TMP"
           echo '<div align="center">' >> "$PREVIEW_FILE_TMP"
-          echo "  <img src=\"$GIF_FILE\" width=\"600\" alt=\"ascii gif preview\"/>" >> "$PREVIEW_FILE_TMP"
+          echo "  <img src=\"$GIF_FILE\" alt=\"ascii gif preview\"/>" >> "$PREVIEW_FILE_TMP"
           echo '</div>' >> "$PREVIEW_FILE_TMP"
           echo '' >> "$PREVIEW_FILE_TMP"
 
@@ -73,7 +73,7 @@ jobs:
               fi
               echo '    <tr>' >> "$PREVIEW_FILE_TMP"
             fi
-            echo "      <td align=\"center\"><img src=\"screenshots/${file}.png\" width=\"160\"/><br/><sub><b>${file}</b></sub></td>" >> "$PREVIEW_FILE_TMP"
+            echo "      <td align=\"center\"><img src=\"screenshots/${file}.png\"/><br/><sub><b>${file}</b></sub></td>" >> "$PREVIEW_FILE_TMP"
             i=$((i + 1))
           done
           echo '    </tr>' >> "$PREVIEW_FILE_TMP"
