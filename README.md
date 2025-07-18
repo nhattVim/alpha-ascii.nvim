@@ -1,4 +1,4 @@
-<p align='right'><em>Last updated: 2025-07-18 09:27 UTC+7</em></p>
+<p align='right'><em>Last updated: 2025-07-18 10:00 UTC+7</em></p>
 
 # alpha-ascii.nvim
 
@@ -7,7 +7,7 @@ A simple plugin for [alpha-nvim ]("https://github.com/goolord/alpha-nvim") that 
 ## ✨ Preview
 
 <div align="center">
-  <img src="screenshots/ascii_preview.gif" width="600" alt="ascii gif preview"/>
+  <img src="screenshots/ascii_preview.gif" alt="ascii gif preview"/>
 </div>
 
 <details><summary>Show individual screenshots</summary>
@@ -15,14 +15,14 @@ A simple plugin for [alpha-nvim ]("https://github.com/goolord/alpha-nvim") that 
 <div align="center">
   <table>
     <tr>
-      <td align="center"><img src="screenshots/abstract_portrait.png" width="160"/><br/><sub><b>abstract_portrait</b></sub></td>
-      <td align="center"><img src="screenshots/blue_bubblegum.png" width="160"/><br/><sub><b>blue_bubblegum</b></sub></td>
-      <td align="center"><img src="screenshots/calm_eyes.png" width="160"/><br/><sub><b>calm_eyes</b></sub></td>
+      <td align="center"><img src="screenshots/abstract_portrait.png"/><br/><sub><b>abstract_portrait</b></sub></td>
+      <td align="center"><img src="screenshots/blue_bubblegum.png"/><br/><sub><b>blue_bubblegum</b></sub></td>
+      <td align="center"><img src="screenshots/calm_eyes.png"/><br/><sub><b>calm_eyes</b></sub></td>
     </tr>
     <tr>
-      <td align="center"><img src="screenshots/color_eyes.png" width="160"/><br/><sub><b>color_eyes</b></sub></td>
-      <td align="center"><img src="screenshots/girl_bandaged_eyes.png" width="160"/><br/><sub><b>girl_bandaged_eyes</b></sub></td>
-      <td align="center"><img src="screenshots/red_jpa.png" width="160"/><br/><sub><b>red_jpa</b></sub></td>
+      <td align="center"><img src="screenshots/color_eyes.png"/><br/><sub><b>color_eyes</b></sub></td>
+      <td align="center"><img src="screenshots/girl_bandaged_eyes.png"/><br/><sub><b>girl_bandaged_eyes</b></sub></td>
+      <td align="center"><img src="screenshots/red_jpa.png"/><br/><sub><b>red_jpa</b></sub></td>
     </tr>
   </table>
 </div>
@@ -78,39 +78,66 @@ return {
 
 ```lua
 opts = {
-    header = "random", -- Set to "random" for a random header, or a specific header name (without .lua extension)
-    exclude = { "example1", "ugly_header" }, -- List of headers to exclude (filenames without .lua)
+    -- Header name, use "random" for a random header
+    header = "abstract_portrait",
+
+    -- List of headers to exclude
+    exclude = {
+        "header_1",
+        "header_2",
+        -- ...
+    },
+
+    -- Path to your custom headers
+    user_path = vim.fn.stdpath("config") .. "/ascii/",
 }
 ```
 
-<!-- ## Generate header image -->
-<!---->
-<!-- You can use [nxtkofi's img2art github repository](https://github.com/nxtkofi/img2art) a fork of [Asthestarsfalll's img2art github repository](https://github.com/Asthestarsfalll/img2art) to generate header images. -->
-<!---->
-<!-- > [!Important] -->
-<!-- > For more details or custom output options visit [Asthestarsfalll's img2art github repository](https://github.com/Asthestarsfalll/img2art) -->
-<!-- > Without him none of this would be possible! -->
-<!---->
-<!-- 1. Clone my fork of ASthestarsfalll's repository. git clone https://github.com/nxtkofi/img2art -->
-<!---->
-<!-- 2. Install requirements inside the project root -->
-<!---->
-<!--     ``` -->
-<!--     cd img2art -->
-<!--     python -m venv ./venv -->
-<!--     source venv/bin/activate -->
-<!--     pip install typer opencv-python numpy -->
-<!---->
-<!--     ``` -->
-<!---->
-<!-- 3. We're now ready to go! Run: poetry run python -m img2art.cli ~/path/to/picture.jpg --scale 0.3 --threshold 20 --save-raw ./test.lua --alpha -->
-<!---->
-<!-- What does it do: -->
-<!---->
-<!-- - `--scale 0.3` This is scaling for our image. Pick a value so it fits into Your dashboard -->
-<!-- - `-threshold 20` This is black-white threshold point. I suggest You play around it for a bit to see what's the best outcome for Your picture. Usually it's something between 20-150 -->
-<!-- - `./test.lua` This is where our output file will go and what name will it receive. Leave .lua extension. You may change the name. -->
-<!-- - `--alpha` This makes sure that we get our picture in desired output style (ready to paste into alpha's dashboard!). -->
-<!---->
-<!-- You should have Your output file now! Move it into header_img folder. Now to set a header image go ahead and check out my ./lua/custom/plugins/alpha.lua file. -->
-<!-- Function load_random_header() loads random header image from header_img folder on nvim startup. -->
+## 🚀 Command
+
+- `AlphaAsciiNext` - Next header image
+- `AlphaAsciiPrev` - Previous header image
+- `AlphaAsciiRandom` - Random header image
+- `AlphaAsciiName` - Get current header name
+
+## 🖼️ Generate Header Images
+
+To generate header images, use [nxtkofi's img2art github repository](https://github.com/nxtkofi/img2art), a fork of [Asthestarsfalll's img2art github repository](https://github.com/Asthestarsfalll/img2art) project — it can speed up the process by 90%.
+
+> [!Important]
+> For advanced options and more details, see the original repo: [Asthestarsfalll's img2art github repository](https://github.com/Asthestarsfalll/img2art)
+> Without his work, this project wouldn’t be possible 🙏.
+
+1.  Clone nxtkofi's repository.
+
+    ```
+    git clone https://github.com/nxtkofi/img2art
+    cd img2art
+    ```
+
+2.  Install dependencies
+
+    ```
+    python -m venv ./venv
+    source venv/bin/activate
+    pip install typer opencv-python numpy
+    ```
+
+3.  Generate your ASCII header
+
+    ```
+    poetry run python -m img2art.cli ~/path/to/picture.jpg --scale 0.3 --threshold 20 --save-raw ./test.lua --alpha
+    ```
+
+    Explanation:
+
+        - `--scale 0.3` This is scaling for our image. Pick a value so it fits into Your dashboard
+        - `-threshold 20` This is black-white threshold point. I suggest You play around it for a bit to see what's the best outcome for Your picture. Usually it's something between 20-150
+        - `./test.lua` This is where our output file will go and what name will it receive. Leave .lua extension. You may change the name.
+        - `--alpha` This makes sure that we get our picture in desired output style (ready to paste into alpha's dashboard!).
+
+4.  Move the output file to your `ascii/` custom folder and reference it by name in the header config.
+
+## 📊 Contributions
+
+![Alt](https://repobeats.axiom.co/api/embed/337a7717190409bdb979535aced71ebac65995da.svg "Repobeats analytics image")
