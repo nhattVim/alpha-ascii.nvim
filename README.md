@@ -1,4 +1,4 @@
-<p align='right'><em>Last updated: 2025-07-18 10:00 UTC+7</em></p>
+<p align='right'><em>Last updated: 2025-07-18 14:24 UTC+7</em></p>
 
 # alpha-ascii.nvim
 
@@ -95,10 +95,10 @@ opts = {
 
 ## 🚀 Command
 
-- `AlphaAsciiNext` - Next header image
-- `AlphaAsciiPrev` - Previous header image
-- `AlphaAsciiRandom` - Random header image
-- `AlphaAsciiName` - Get current header name
+-   `AlphaAsciiNext` - Next header image
+-   `AlphaAsciiPrev` - Previous header image
+-   `AlphaAsciiRandom` - Random header image
+-   `AlphaAsciiName` - Get current header name
 
 ## 🖼️ Generate Header Images
 
@@ -131,10 +131,10 @@ To generate header images, use [nxtkofi's img2art github repository](https://git
 
     Explanation:
 
-        - `--scale 0.3` This is scaling for our image. Pick a value so it fits into Your dashboard
-        - `-threshold 20` This is black-white threshold point. I suggest You play around it for a bit to see what's the best outcome for Your picture. Usually it's something between 20-150
-        - `./test.lua` This is where our output file will go and what name will it receive. Leave .lua extension. You may change the name.
-        - `--alpha` This makes sure that we get our picture in desired output style (ready to paste into alpha's dashboard!).
+    -   `--scale 0.3` This is scaling for our image. Pick a value so it fits into Your dashboard
+    -   `-threshold 20` This is black-white threshold point. I suggest You play around it for a bit to see what's the best outcome for Your picture. Usually it's something between 20-150
+    -   `./test.lua` This is where our output file will go and what name will it receive. Leave .lua extension. You may change the name.
+    -   `--alpha` This makes sure that we get our picture in desired output style (ready to paste into alpha's dashboard!).
 
 4.  Move the output file to your `ascii/` custom folder and reference it by name in the header config.
 
