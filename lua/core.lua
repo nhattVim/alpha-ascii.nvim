@@ -15,7 +15,7 @@ function M.init_list()
         exclude[name] = true
     end
 
-    local default_folder = (debug.getinfo(1, "S").source:sub(2):match("(.*/)") or "") .. "headers/"
+    local default_folder = (debug.getinfo(1, "S").source:sub(2):match("(.*/)") or "") .. "headers"
     local default_list = {}
 
     for _, name in ipairs(U.get_ascii_files(default_folder)) do

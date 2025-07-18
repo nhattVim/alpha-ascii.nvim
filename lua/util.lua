@@ -1,7 +1,7 @@
 local M = {}
 
 function M.get_ascii_files(folder)
-    local glob_pattern = folder .. "*.lua"
+    local glob_pattern = folder .. "/*.lua"
     local files = vim.fn.glob(glob_pattern, true, true)
     local result = {}
 
