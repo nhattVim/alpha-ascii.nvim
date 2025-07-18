@@ -5,6 +5,7 @@ function M.setup(opts)
     core.options = vim.tbl_deep_extend("force", core.options, opts or {})
     core.init_list()
     core._index = 1
+
     local header = core.get_header()
 
     if header then
@@ -35,7 +36,8 @@ function M.setup(opts)
     end, {})
 
     vim.api.nvim_create_user_command("AlphaAsciiName", function()
-        print("[alpha_ascii] Current header: " .. (core._ascii_list[core._index] or "N/A"))
+        local item = core._ascii_list[core._index]
+        print("[alpha_ascii] Current header: " .. (item and item.name or "N/A"))
     end, {})
 end
 

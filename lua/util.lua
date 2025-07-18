@@ -1,13 +1,13 @@
 local M = {}
 
 function M.get_ascii_files(folder)
-    local glob_pattern = folder .. "headers/*.lua"
+    local glob_pattern = folder .. "*.lua"
     local files = vim.fn.glob(glob_pattern, true, true)
     local result = {}
 
     for _, path in ipairs(files) do
         local name = path:match("([^/\\]+)%.lua$")
-        if name ~= "init" then
+        if name and name ~= "init" then
             table.insert(result, name)
         end
     end
@@ -15,11 +15,16 @@ function M.get_ascii_files(folder)
     return result
 end
 
-function M.load_ascii(name)
-    local module_name = "headers." .. name
-    package.loaded[module_name] = nil
-    local ok, mod = pcall(require, module_name)
-    return (ok and mod.header) and mod.header or nil
+function M.load_ascii(name, path)
+    local file = path .. "/" .. name .. ".lua"
+    local chunk, err = loadfile(file)
+    if not chunk then
+        print("[alpha_ascii] Failed to load file: " .. err)
+        return nil
+    end
+
+    local ok, mod = pcall(chunk)
+    return (ok and mod and mod.header) and mod.header or nil
 end
 
 return M
