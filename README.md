@@ -1,4 +1,4 @@
-<p align='right'><em>Last updated: 2025-07-19 07:47 UTC+7</em></p>
+<p align='right'><em>Last updated: 2025-07-19 07:48 UTC+7</em></p>
 
 # alpha-ascii.nvim
 
@@ -89,7 +89,7 @@ opts = {
     },
 
     -- Use some default headers
-    -- use_default = true,
+    use_default = true,
 
     -- Path to your custom headers
 
