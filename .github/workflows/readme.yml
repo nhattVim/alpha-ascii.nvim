@@ -30,9 +30,7 @@ jobs:
       HEADER_FILE: .github/readme/README.header.md
       PREVIEW_FILE: .github/readme/README.preview.md
       FOOTER_FILE: .github/readme/README.footer.md
-      PREVIEW_TMP: .README.preview.tmp.md
-      README_BASE: .README.base.md
-      README_NEW: .README.new.md
+      PREVIEW_FILE_TMP: .README.preview.md
       GIF_FILE: screenshots/ascii_preview.gif
 
     steps:
@@ -57,85 +55,85 @@ jobs:
             echo "No PNG screenshots found."
           fi
 
-      - name: Setup Lua (for downstream compatibility)
+      - name: Setup Lua
         uses: ljmf00/setup-lua@v1.0.0
 
-      - name: Generate Preview Section (temporary)
+      - name: Generate preview list with GIF
         run: |
-          {
-            echo '## ✨ Preview'
-            echo ''
-            echo '<div align="center">'
-            echo "  <img src=\"$GIF_FILE\" alt=\"ascii gif preview\"/>"
-            echo '</div>'
-            echo ''
-            echo '<details><summary>Show individual screenshots</summary>'
-            echo ''
-            echo '<div align="center">'
-            echo '  <table>'
+          echo '## ✨ Preview' > "$PREVIEW_FILE_TMP"
+          echo '' >> "$PREVIEW_FILE_TMP"
+          echo '<div align="center">' >> "$PREVIEW_FILE_TMP"
+          echo "  <img src=\"$GIF_FILE\" alt=\"ascii gif preview\"/>" >> "$PREVIEW_FILE_TMP"
+          echo '</div>' >> "$PREVIEW_FILE_TMP"
+          echo '' >> "$PREVIEW_FILE_TMP"
 
-            i=0
-            for file in $(ls screenshots/*.png | xargs -n1 basename | sed 's/\.png$//' | sort); do
-              if [ $((i % 3)) -eq 0 ]; then
-                [ $i -ne 0 ] && echo '    </tr>'
-                echo '    <tr>'
+          echo '<details><summary>Show individual screenshots</summary>' >> "$PREVIEW_FILE_TMP"
+          echo '' >> "$PREVIEW_FILE_TMP"
+          echo '<div align="center">' >> "$PREVIEW_FILE_TMP"
+
+          preview_files=$(ls screenshots/*.png | xargs -n1 basename | sed 's/\.png$//' | sort)
+
+          i=0
+          echo '  <table>' >> "$PREVIEW_FILE_TMP"
+          for file in $preview_files; do
+            if [ $((i % 3)) -eq 0 ]; then
+              if [ $i -ne 0 ]; then
+                echo '    </tr>' >> "$PREVIEW_FILE_TMP"
               fi
-              echo "      <td align=\"center\"><img src=\"screenshots/${file}.png\"/><br/><sub><b>${file}</b></sub></td>"
-              i=$((i + 1))
-            done
+              echo '    <tr>' >> "$PREVIEW_FILE_TMP"
+            fi
+            echo "      <td align=\"center\"><img src=\"screenshots/${file}.png\"/><br/><sub><b>${file}</b></sub></td>" >> "$PREVIEW_FILE_TMP"
+            i=$((i + 1))
+          done
+          echo '    </tr>' >> "$PREVIEW_FILE_TMP"
+          echo '  </table>' >> "$PREVIEW_FILE_TMP"
+          echo '</div>' >> "$PREVIEW_FILE_TMP"
+          echo '</details>' >> "$PREVIEW_FILE_TMP"
 
-            echo '    </tr>'
-            echo '  </table>'
-            echo '</div>'
-            echo '</details>'
-          } > "$PREVIEW_TMP"
-
-      - name: Assemble Existing and New README Content (excluding timestamp)
+      - name: Compare header, footer and preview content
+        id: compare
         run: |
+          changed=false
+
+          if ! cmp -s "$PREVIEW_FILE_TMP" "$PREVIEW_FILE"; then
+            echo "Preview changed"
+            changed=true
+          fi
+
+          if ! cmp -s "$HEADER_FILE" <(git show HEAD:"$HEADER_FILE"); then
+            echo "Header changed"
+            changed=true
+          fi
+
+          if ! cmp -s "$FOOTER_FILE" <(git show HEAD:"$FOOTER_FILE"); then
+            echo "Footer changed"
+            changed=true
+          fi
+
+          if [ "$changed" = false ] && [ "${{ github.event.inputs.force_update }}" != "true" ]; then
+            echo "No change"
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "Update triggered"
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Finalize full README if changed or forced
+        if: steps.compare.outputs.changed == 'true'
+        run: |
+          mv "$PREVIEW_FILE_TMP" "$PREVIEW_FILE"
+
           {
+            echo "<p align='right'><em>Last updated: $(date -u -d '+7 hour' '+%Y-%m-%d %H:%M UTC+7')</em></p>"
+            echo ""
             cat "$HEADER_FILE"
             echo ""
             cat "$PREVIEW_FILE"
             echo ""
             cat "$FOOTER_FILE"
-          } > "$README_BASE"
-
-          {
-            cat "$HEADER_FILE"
-            echo ""
-            cat "$PREVIEW_TMP"
-            echo ""
-            cat "$FOOTER_FILE"
-          } > "$README_NEW"
-
-      - name: Compare README content (excluding timestamp)
-        id: compare
-        run: |
-          if cmp -s "$README_BASE" "$README_NEW"; then
-            if [ "${{ github.event.inputs.force_update }}" = "true" ]; then
-              echo "Forced update"
-              echo "changed=true" >> $GITHUB_OUTPUT
-            else
-              echo "No change detected"
-              echo "changed=false" >> $GITHUB_OUTPUT
-            fi
-          else
-            echo "README content changed"
-            echo "changed=true" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Update README if content changed or forced
-        if: steps.compare.outputs.changed == 'true'
-        run: |
-          mv "$PREVIEW_TMP" "$PREVIEW_FILE"
-
-          {
-            echo "<p align='right'><em>Last updated: $(date -u -d '+7 hour' '+%Y-%m-%d %H:%M UTC+7')</em></p>"
-            echo ""
-            cat "$README_NEW"
           } > "$README_FILE"
 
-      - name: Commit & Push changes
+      - name: Commit & Push if changed or forced
         if: steps.compare.outputs.changed == 'true'
         run: |
           git config user.name "github-actions[bot]"
@@ -146,7 +144,3 @@ jobs:
             -m "Updated at: $(date -u -d '+7 hour' '+%Y-%m-%d %H:%M UTC+7')"
           git pull --rebase origin "$(git rev-parse --abbrev-ref HEAD)"
           git push
-
-      - name: Cleanup temp files
-        if: always()
-        run: rm -f "$README_BASE" "$README_NEW" "$PREVIEW_TMP"
