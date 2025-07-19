@@ -26,11 +26,13 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
+      README_FULL: .README.full.md
+      PREVIEW_FILE: .github/readme/README.preview.md
+      README_FULL_TEMP: .github/readme/README.full.md
+      PREVIEW_FILE_TMP: .README.preview.md
       README_FILE: README.md
       HEADER_FILE: .github/readme/README.header.md
-      PREVIEW_FILE: .github/readme/README.preview.md
       FOOTER_FILE: .github/readme/README.footer.md
-      PREVIEW_FILE_TMP: .README.preview.md
       GIF_FILE: screenshots/ascii_preview.gif
 
     steps:
@@ -90,31 +92,27 @@ jobs:
           echo '</div>' >> "$PREVIEW_FILE_TMP"
           echo '</details>' >> "$PREVIEW_FILE_TMP"
 
-      - name: Compare header, footer and preview content
+      - name: Compare readme
         id: compare
         run: |
-          changed=false
+          {
+            cat "$HEADER_FILE"
+            echo ""
+            cat "$PREVIEW_FILE_TMP"
+            echo ""
+            cat "$FOOTER_FILE"
+          } > "$README_FULL_TEMP"
 
-          if ! cmp -s "$PREVIEW_FILE_TMP" "$PREVIEW_FILE"; then
-            echo "Preview changed"
-            changed=true
-          fi
-
-          if ! cmp -s "$HEADER_FILE" <(git show HEAD:"$HEADER_FILE"); then
-            echo "Header changed"
-            changed=true
-          fi
-
-          if ! cmp -s "$FOOTER_FILE" <(git show HEAD:"$FOOTER_FILE"); then
-            echo "Footer changed"
-            changed=true
-          fi
-
-          if [ "$changed" = false ] && [ "${{ github.event.inputs.force_update }}" != "true" ]; then
-            echo "No change"
-            echo "changed=false" >> $GITHUB_OUTPUT
+          if cmp -s "$README_FULL_TEMP" "$README_FULL"; then
+            if [ "${{ github.event.inputs.force_update }}" = "true" ]; then
+              echo "Forced update"
+              echo "changed=true" >> $GITHUB_OUTPUT
+            else
+              echo "No change"
+              echo "changed=false" >> $GITHUB_OUTPUT
+            fi
           else
-            echo "Update triggered"
+            echo "README changed"
             echo "changed=true" >> $GITHUB_OUTPUT
           fi
 
@@ -122,6 +120,7 @@ jobs:
         if: steps.compare.outputs.changed == 'true'
         run: |
           mv "$PREVIEW_FILE_TMP" "$PREVIEW_FILE"
+          mv "$README_FULL_TEMP" "$README_FULL"
 
           {
             echo "<p align='right'><em>Last updated: $(date -u -d '+7 hour' '+%Y-%m-%d %H:%M UTC+7')</em></p>"
