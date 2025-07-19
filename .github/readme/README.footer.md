@@ -58,6 +58,9 @@ opts = {
         -- ...
     },
 
+    -- Use some default headers
+    use_default = true,
+
     -- Path to your custom headers
 
     -- Option 1: Use absolute path

@@ -4,6 +4,7 @@ local M = {
         header = "random",
         exclude = {},
         user_path = nil,
+        use_default = true,
     },
     _ascii_list = {},
     _index = 1,
@@ -35,7 +36,7 @@ function M.init_list()
         end
     end
 
-    M._ascii_list = vim.list_extend(default_list, user_list)
+    M._ascii_list = M.options.use_default and vim.list_extend(default_list, user_list) or user_list
 
     table.sort(M._ascii_list, function(a, b)
         return a.name < b.name
