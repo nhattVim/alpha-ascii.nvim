@@ -142,7 +142,7 @@ To generate header images, use [nxtkofi's img2art github repository](https://git
     -   `./test.lua` This is where our output file will go and what name will it receive. Leave .lua extension. You may change the name.
     -   `--alpha` This makes sure that we get our picture in desired output style (ready to paste into alpha's dashboard!).
 
-4.  Move the output file to your `ascii/`
+4.  Move the output file to your `ascii/` custom header directory
 
 ## 📊 Contributions
 
