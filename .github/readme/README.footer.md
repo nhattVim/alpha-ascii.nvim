@@ -59,7 +59,7 @@ opts = {
     },
 
     -- Use some default headers
-    -- use_default = true,
+    use_default = true,
 
     -- Path to your custom headers
 
