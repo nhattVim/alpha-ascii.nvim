@@ -26,11 +26,11 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      README_FULL: .README.full.md
-      PREVIEW_FILE: .github/readme/README.preview.md
-      README_FULL_TEMP: .github/readme/README.full.md
-      PREVIEW_FILE_TMP: .README.preview.md
       README_FILE: README.md
+      README_FULL_TEMP: .README.full.md      
+      PREVIEW_FILE_TMP: .README.preview.md
+      README_FULL: .github/readme/README.full.md
+      PREVIEW_FILE: .github/readme/README.preview.md
       HEADER_FILE: .github/readme/README.header.md
       FOOTER_FILE: .github/readme/README.footer.md
       GIF_FILE: screenshots/ascii_preview.gif
@@ -141,4 +141,5 @@ jobs:
           git commit \
             -m "chore(readme): 🤖 Auto-generate README" \
             -m "Updated at: $(date -u -d '+7 hour' '+%Y-%m-%d %H:%M UTC+7')"
+          git pull --rebase origin "$(git rev-parse --abbrev-ref HEAD)"
           git push
