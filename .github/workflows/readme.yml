@@ -125,11 +125,7 @@ jobs:
           {
             echo "<p align='right'><em>Last updated: $(date -u -d '+7 hour' '+%Y-%m-%d %H:%M UTC+7')</em></p>"
             echo ""
-            cat "$HEADER_FILE"
-            echo ""
-            cat "$PREVIEW_FILE"
-            echo ""
-            cat "$FOOTER_FILE"
+            cat "$README_FULL"
           } > "$README_FILE"
 
       - name: Commit & Push if changed or forced
