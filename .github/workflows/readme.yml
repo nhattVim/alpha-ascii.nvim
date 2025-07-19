@@ -137,7 +137,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add "$README_FILE" "$PREVIEW_FILE" "$GIF_FILE"
+          git add "$README_FILE" "$README_FULL" "$PREVIEW_FILE" "$GIF_FILE"
           git commit \
             -m "chore(readme): 🤖 Auto-generate README" \
             -m "Updated at: $(date -u -d '+7 hour' '+%Y-%m-%d %H:%M UTC+7')"
