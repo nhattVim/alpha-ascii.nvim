@@ -3,7 +3,7 @@ name: Generate README
 on:
   push:
     paths:
-      - "lua/alpha_ascii/**"
+      - "screenshots/**"
       - ".github/workflows/readme.yml"
       - ".github/readme/README.header.md"
       - ".github/readme/README.footer.md"
